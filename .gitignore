@@ -1,0 +1,32 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Dependencies
+node_modules/
+vendor/bundle/
+
+# Build artifacts
+dist/
+build/
+coverage/
+.next/
+tmp/
+log/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Rails
+storage/
+public/assets/
+public/packs/
+
+# IDE
+.idea/
+.vscode/
+
+# ignore docs
+

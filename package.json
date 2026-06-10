@@ -1,0 +1,13 @@
+{
+  "name": "shurikapp",
+  "private": true,
+  "workspaces": [
+    "frontend"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w frontend",
+    "build": "npm run build -w frontend",
+    "lint": "npm run lint -w frontend"
+  }
+}
+

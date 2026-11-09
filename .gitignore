@@ -7,6 +7,8 @@ node_modules/
 vendor/bundle/
 
 # Build artifacts
+*.tsbuildinfo
+frontend/next-env.d.ts
 dist/
 build/
 coverage/

@@ -1,24 +1,45 @@
-# README
+# SHURIKAPP backend
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Rails 8.1 API (Ruby 4.0.9) with PostgreSQL and Clerk authentication.
 
-Things you may want to cover:
+## Local setup
 
-* Ruby version
+```bash
+cp .env.example .env        # fill in the Clerk values
+bundle install
+bin/rails db:prepare
+bin/dev                     # http://localhost:3001
+```
 
-* System dependencies
+Or, from the repository root, `docker compose up` starts PostgreSQL, the API and the frontend.
 
-* Configuration
+## Endpoints
 
-* Database creation
+| Method | Path | Auth | Purpose |
+|---|---|---|---|
+| GET | `/up`, `/api/v1/health` | none | Health check |
+| GET | `/api/v1/session` | Clerk token | Returns the Clerk user and session behind the token |
 
-* Database initialization
+Authenticated controllers inherit from `Api::V1::BaseController`, which verifies the
+`Authorization: Bearer <token>` header with `Auth::ClerkTokenVerifier` (RS256, issuer,
+expiry and authorized party) and exposes `current_clerk_user_id`.
 
-* How to run the test suite
+## Quality checks
 
-* Services (job queues, cache servers, search engines, etc.)
+```bash
+bin/rubocop          # style (rubocop-rails-omakase)
+bin/brakeman         # security static analysis
+bin/bundler-audit    # known vulnerable gems
+bundle exec rspec    # test suite (needs PostgreSQL)
+bin/ci               # all of the above, as CI runs them
+```
 
-* Deployment instructions
+## Configuration
 
-* ...
+See `.env.example`. In production set `DATABASE_URL` (Supabase, with `sslmode=require`),
+`SECRET_KEY_BASE`, `FRONTEND_URL` and the `CLERK_*` variables.
+
+## Docker
+
+- `Dockerfile`: multi-stage production image (non-root, `RAILS_ENV=production`, port 3001).
+- `Dockerfile.dev`: development image used by `docker-compose.yml`.

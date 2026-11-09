@@ -1,7 +1,6 @@
 # SHURIKAPP v1 - Database Initial Draft
 
 ## Principles
-ZssF8dMBX1vurlsh
 - Multi-tenant by default.
 - Every business record must belong to a tenant scope.
 - Shared reference data should be minimized.

@@ -1,6 +1,6 @@
 # SHURIKAPP backend
 
-Rails 8.1 API (Ruby 4.0.3) with PostgreSQL and Clerk authentication.
+Rails 8.1 API (Ruby 4.0.9) with PostgreSQL and Clerk authentication.
 
 ## Local setup
 

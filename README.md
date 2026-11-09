@@ -4,7 +4,7 @@ Monorepo for the SHURIKAPP platform.
 
 ## Stack
 
-- Backend: Rails 8.1 API (Ruby 4.0.3)
+- Backend: Rails 8.1 API (Ruby 4.0.9)
 - Frontend: Next.js 16 + React 19 + TypeScript
 - Auth: Clerk, verified directly by the backend API (`Auth::ClerkTokenVerifier`)
 - Database: PostgreSQL (Supabase in production, a local container in development)

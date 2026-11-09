@@ -5,7 +5,7 @@
 #   docker run -p 3001:3001 -e DATABASE_URL=... -e SECRET_KEY_BASE=... \
 #     -e CLERK_ISSUER=... -e FRONTEND_URL=... shurikapp-backend
 
-ARG RUBY_VERSION=4.0.3
+ARG RUBY_VERSION=4.0.9
 FROM docker.io/library/ruby:$RUBY_VERSION-slim AS base
 
 WORKDIR /rails

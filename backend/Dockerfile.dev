@@ -1,7 +1,7 @@
 # Development image used by docker-compose. The source code is mounted as a
 # volume and gems live in the `backend_bundle` volume, so rebuilding is only
 # needed when the Ruby version or system packages change.
-FROM ruby:4.0.3
+FROM ruby:4.0.9
 
 WORKDIR /app
 

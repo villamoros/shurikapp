@@ -1,27 +1,69 @@
+# Local development stack: PostgreSQL + Rails API + Next.js.
+#
+#   cp backend/.env.example backend/.env
+#   cp frontend/.env.example frontend/.env.local
+#   docker compose up --build
+#
+# API: http://localhost:3001 · Frontend: http://localhost:3000
+
 services:
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
   backend:
     build:
       context: ./backend
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     ports:
       - "3001:3001"
     env_file:
-      - ./backend/.env.example
+      - path: ./backend/.env
+        required: false
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      FRONTEND_URL: http://localhost:3000
     volumes:
       - ./backend:/app
-    command: bundle exec rails server -b 0.0.0.0 -p 3001
+      - backend_bundle:/bundle
+    command: bash -c "bundle check || bundle install; bin/rails db:prepare && bin/rails server -b 0.0.0.0 -p 3001"
+    depends_on:
+      db:
+        condition: service_healthy
 
   frontend:
     build:
-      context: ./frontend
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: frontend/Dockerfile.dev
     ports:
       - "3000:3000"
     env_file:
-      - ./frontend/.env.example
+      - path: ./frontend/.env.local
+        required: false
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:3001
+      NEXT_TELEMETRY_DISABLED: "1"
     volumes:
-      - ./frontend:/app
-    command: npm run dev
+      - ./frontend:/app/frontend
+      - frontend_next:/app/frontend/.next
     depends_on:
       - backend
 
+volumes:
+  db_data:
+  backend_bundle:
+  frontend_next:
